@@ -1,44 +1,88 @@
+# general:
+#   buildTool: 'gradle'
+#   productiveBranch: 'master'
+#   pipelineOptimization: true
+#   gitHttpsCredentialsId: 'hyperspace-github-wdf-sap-corp-i334700'
+#   vaultAppRoleTokenCredentialsId: 'vault-approle-role-id-410-7525'
+#   vaultAppRoleSecretTokenCredentialsId: 'vault-approle-secret-id-accessor-410-7525'
+#   vaultBasePath: 'piper/PIPELINE-GROUP-410'
+#   vaultPipelineName: 'PIPELINE-7525'
+#   vaultServerUrl: 'https://vault.tools.sap'
+#   vaultNamespace: 'ies/hyperspace/pipelines'
+#   nativeBuild: true
+#   pipelineId: 'a0580621-1f82-4d82-90a4-66385ae0088d'
+#   verbose: true
+
+# steps:
+#   mavenBuild:
+#     createBOM: true
+#   executeBuild:
+#     buildType: stage
+#   sapCallStagingService:
+#     url: 'https://staging.repositories.cloud.sap/stage/api'
+#     profile: 'group-410-default'
+#   sonarExecuteScan:
+#     serverUrl: 'https://sonar.wdf.sap.corp'
+#     instance: 'SAP SonarQube Enterprise'
+#     sonarTokenCredentialsId: 'hyperspace-sonar-i516198'
+#   fortifyExecuteScan:
+#     buildTool: 'maven'
+#     # buildTool: 'mta'
+#     fortifyCredentialsId: 'hyperspace-fortify-p2002989438'
+#     serverUrl: 'https://fortify.tools.sap/ssc'
+#     src: ['**/*.xml', '**/src/main/java/**/*', '**/src/main/resources/**']
+#     exclude: ['**/target/**/*', '**/unit-tests/**/*', '**/integration-tests/**/*', '**/performance-tests/**/*', '**/src/test/**/*', '**/s4hana_pipeline/**/*']
+#     autoCreate: true
+#     projectName: 'Siarhei-maven-pipeline'
+#   detectExecuteScan:
+#     detectTokenCredentialsId: 'hyperspace-blackduckhub-i516198'
+#     projectName: 'Siarhei-maven-pipeline'
+#     groups:
+#     - 'Siarhei-maven-pipeline'
+#   sapCumulusUpload:
+#     pipelineId: 'a0580621-1f82-4d82-90a4-66385ae0088d'
+#     cumulusFileCredentialsId: 'hyperspace-cumulusupload-410'
+
 general:
   buildTool: 'gradle'
   productiveBranch: 'master'
   pipelineOptimization: true
-  gitHttpsCredentialsId: 'hyperspace-github-wdf-sap-corp-i334700'
-  vaultAppRoleTokenCredentialsId: 'vault-approle-role-id-410-7525'
-  vaultAppRoleSecretTokenCredentialsId: 'vault-approle-secret-id-accessor-410-7525'
-  vaultBasePath: 'piper/PIPELINE-GROUP-410'
-  vaultPipelineName: 'PIPELINE-7525'
+  gitHttpsCredentialsId: 'hyperspace-github-wdf-sap-corp-c5320120'
+  vaultAppRoleTokenCredentialsId: 'vault-approle-role-id-454-10212'
+  vaultAppRoleSecretTokenCredentialsId: 'vault-approle-secret-id-accessor-454-10212'
+  vaultBasePath: 'piper/PIPELINE-GROUP-454'
+  vaultPipelineName: 'PIPELINE-10212'
   vaultServerUrl: 'https://vault.tools.sap'
   vaultNamespace: 'ies/hyperspace/pipelines'
   nativeBuild: true
-  pipelineId: 'a0580621-1f82-4d82-90a4-66385ae0088d'
-  verbose: true
-
+stages:
+  #Security:
+  #  fortifyExecuteScan: true
 steps:
-  mavenBuild:
-    createBOM: true
+  artifactPrepareVersion:
+    gitHttpsCredentialVaultSecretName: 'github'
   executeBuild:
     buildType: stage
   sapCallStagingService:
     url: 'https://staging.repositories.cloud.sap/stage/api'
-    profile: 'group-410-default'
-  sonarExecuteScan:
-    serverUrl: 'https://sonar.wdf.sap.corp'
-    instance: 'SAP SonarQube Enterprise'
-    sonarTokenCredentialsId: 'hyperspace-sonar-i516198'
-  fortifyExecuteScan:
-    buildTool: 'maven'
-    # buildTool: 'mta'
-    fortifyCredentialsId: 'hyperspace-fortify-p2002989438'
-    serverUrl: 'https://fortify.tools.sap/ssc'
-    src: ['**/*.xml', '**/src/main/java/**/*', '**/src/main/resources/**']
-    exclude: ['**/target/**/*', '**/unit-tests/**/*', '**/integration-tests/**/*', '**/performance-tests/**/*', '**/src/test/**/*', '**/s4hana_pipeline/**/*']
-    autoCreate: true
-    projectName: 'Siarhei-maven-pipeline'
+    profile: 'group-454-default'
+  #sonarExecuteScan:
+  #  serverUrl: sonar instance URL
+  #  customTlsCertificateLinks: [] # workaround (can be remove once https://github.com/SAP/jenkins-library/issues/3276 is closed)
+  # for more information, please visit https://github.wdf.sap.corp/pages/ContinuousDelivery/piper-doc/steps/sonarExecuteScan
+  #fortifyExecuteScan:
+  #  buildTool: 'maven'
+  #  serverUrl: 'https://fortify.tools.sap/ssc'
+  #  src: ['**/*.xml', '**/src/main/java/**/*', '**/src/main/resources/**']
+  #  exclude: ['**/target/**/*', '**/unit-tests/**/*', '**/integration-tests/**/*', '**/performance-tests/**/*', '**/src/test/**/*', '**/s4hana_pipeline/**/*']
+  #  autoCreate: true
+  #  projectName: fortify project name
+  # for more information, please visit https://github.wdf.sap.corp/pages/ContinuousDelivery/piper-doc/steps/fortifyExecuteScan/
   detectExecuteScan:
-    detectTokenCredentialsId: 'hyperspace-blackduckhub-i516198'
-    projectName: 'Siarhei-maven-pipeline'
+    detectTokenCredentialsId: 'hyperspace-blackduckhub-c5320120'
+    projectName: 'gradlePipeline'
     groups:
-    - 'Siarhei-maven-pipeline'
+    - 'gradlePipeline'
   sapCumulusUpload:
-    pipelineId: 'a0580621-1f82-4d82-90a4-66385ae0088d'
-    cumulusFileCredentialsId: 'hyperspace-cumulusupload-410'
+    pipelineId: '7c8497f7-4b40-4264-83df-de6ef02b34cb'
+    cumulusFileCredentialsId: 'hyperspace-cumulusupload-454'
